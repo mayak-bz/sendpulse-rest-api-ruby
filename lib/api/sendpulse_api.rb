@@ -21,10 +21,15 @@ class SendpulseApi
   # @param [String] token
   # @raise [Exception]
   #
-  def initialize(user_id, secret, protocol = 'https', token = '')
+  def initialize(user_id, secret, events = true, protocol = 'https', token = '')
     raise 'Empty ID or SECRET' if user_id.to_s.empty? || secret.to_s.empty?
 
-    @url = "#{protocol}://api.sendpulse.com"
+    if events
+      subdomain = "events"
+    else
+      subdomain = "api"
+    end
+    @url = "#{protocol}://#{subdomain}.sendpulse.com"
     @user_id = user_id
     @secret = secret
     @protocol = protocol
