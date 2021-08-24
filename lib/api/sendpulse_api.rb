@@ -21,7 +21,7 @@ class SendpulseApi
   # @param [String] token
   # @raise [Exception]
   #
-  def initialize(user_id, secret, events = true, protocol = 'https', token = '')
+  def initialize(user_id, secret, protocol = 'https', token = '', events: true)
     raise 'Empty ID or SECRET' if user_id.to_s.empty? || secret.to_s.empty?
 
     if events
