@@ -180,6 +180,17 @@ class SendpulseApi
   private :handle_result
 
   #
+  # Create event
+  #
+  # @param [String] event
+  # @param [Hash] data
+  # @return [Hash]
+  #
+  def create_event(event, data)
+    send_request("events/name/#{event}", 'POST', data)
+  end
+
+  #
   # Create address book
   #
   # @param [String] book_name
