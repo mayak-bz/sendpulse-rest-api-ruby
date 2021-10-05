@@ -29,6 +29,7 @@ class SendpulseApi
     else
       subdomain = "api"
     end
+
     @url = "#{protocol}://#{subdomain}.sendpulse.com"
     @user_id = user_id
     @secret = secret
@@ -56,7 +57,10 @@ class SendpulseApi
         client_secret: @secret
     }
 
-    request_data = send_request('oauth/access_token', 'POST', data, false)
+    # Always use API subdomain to get authentication token
+    url = "#{@protocol}://api.sendpulse.com"
+
+    request_data = send_request('oauth/access_token', 'POST', data, false, url)
 
     if !request_data.nil? && request_data[:data]['access_token']
       @token = request_data[:data]['access_token']
@@ -109,11 +113,10 @@ class SendpulseApi
   # @param [Boolean] use_token
   # @return [Hash]
   #
-  def send_request(path, method = 'GET', data = {}, use_token = true)
-
+  def send_request(path, method = 'GET', data = {}, use_token = true, url = @url)
     request_data = {}
 
-    uri = URI.parse("#{@url}/#{path}")
+    uri = URI.parse("#{url}/#{path}")
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true if @protocol == 'https'
